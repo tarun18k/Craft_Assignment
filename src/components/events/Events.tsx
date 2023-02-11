@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { getEvents, getEventsList, IEvent } from '../../services/slice/events.slice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import EventCards from './common/EventCards'
-import styles from './Events.module.scss';
+import EventCards from './common/EventCard'
 
 export default function Events() {
 
@@ -12,13 +11,13 @@ export default function Events() {
 
     useEffect(() => {
         dispatch(getEventsList());
-    }, [])
+    }, [dispatch])
 
     return (
-        <div className={ styles.eventsBox }>
-            <h2 className={ styles.heading }>All Events</h2>
+        <div>
+            <h2>All Events</h2>
             <h2>{ events.length }</h2>
-            <div className={ styles.eventList }>
+            <div>
                 { events.length && events.map((event: IEvent) => {
                     return <EventCards event={ event } key={ event.id } />
                 })

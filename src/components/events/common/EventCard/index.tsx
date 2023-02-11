@@ -1,53 +1,39 @@
 import React from 'react'
-import { deSelectEvents, getSelectedEvents, IEvent, selectEvents } from '../../../services/slice/events.slice'
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import SelectedEvents from '../SelectedEvents';
+import { deSelectEvents, getSelectedEvents, IEvent, selectEvents } from '../../../../services/slice/events.slice'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+
 interface IProps {
     event: IEvent,
-    selectedEvent?: boolean,
+    isSelected?: boolean,
     selectionEnabled?: boolean,
 }
-const EventCards: React.FC<IProps> = (prop: IProps) => {
-
-    const selectedEventsList = useAppSelector(getSelectedEvents);
+const EventCard: React.FC<IProps> = (props: IProps) => {
+    const { event, isSelected, selectionEnabled }: IProps = props;
 
     const dispatch = useAppDispatch();
 
-    const eventValue: IEvent = prop?.event;
+    const selectedEventsList = useAppSelector(getSelectedEvents);
 
-    const isSelected: boolean = prop?.selectedEvent || false;
+    const startDate = new Date(event?.start_time);
+    const endDate = new Date(event?.end_time);
 
-    const selectionEnabled: boolean = prop?.selectionEnabled || false;
-
-    const startDate = new Date(eventValue?.start_time);
-
-    const endDate = new Date(eventValue?.end_time);
-
-    const dateFormatter = (date: Date) => {
-        var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-
-        var dayIndex = date.getDay();
-        var day = days[dayIndex];
-
-        var month = date.toLocaleString('default', { month: 'short' });
-        var year = date.getFullYear();
-        var dayOfMonth = date.getDate();
-
-        return day + ' ' + dayOfMonth + ' ' + month + ' ' + year;
+    const dateFormatter = (date: Date, showTime?: boolean) => {
+        const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        return `${DAYS[date.getDay()]} ${date.getDate()} ${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()} ${showTime ? formatTime(date) : ""}`;
     }
 
     const compareDate = (startDate: Date, endDate: Date) => {
-        return new Date(startDate.toDateString()) == new Date(endDate.toDateString());
+        return new Date(startDate.toDateString()) === new Date(endDate.toDateString());
     }
 
-    const formatAMPM = (date: Date) => {
+    const formatTime = (date: Date) => {
         let hours = date.getHours();
         let minutes: string | number = date.getMinutes();
-        let ampm = hours >= 12 ? 'pm' : 'am';
+        let format = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours ? hours : 12;
         minutes = minutes < 10 ? '0' + minutes : minutes;
-        let strTime = hours + ':' + minutes + ' ' + ampm;
+        let strTime = hours + ':' + minutes + ' ' + format;
         return strTime;
     }
 
@@ -82,29 +68,29 @@ const EventCards: React.FC<IProps> = (prop: IProps) => {
         <div className="card">
             <article className="card fl-left">
                 <section className="date">
-                    <time dateTime={ eventValue.start_time }>
+                    <time dateTime={ event.start_time }>
                         <span>{ startDate.getDate() }</span><span>{ startDate.toLocaleString('default', { month: 'short' }) }</span>
                     </time>
                 </section>
                 <section className="card-cont">
-                    <small>{ eventValue.event_category }</small>
-                    <h3>{ eventValue.event_name }</h3>
+                    <small>{ event.event_category }</small>
+                    <h3>{ event.event_name }</h3>
                     <div className="even-date">
                         <i className="fa fa-calendar"></i>
                         <time>
                             {
                                 compareDate(startDate, endDate) ?
                                     <> <span>{ dateFormatter(startDate) }</span>
-                                        <span>{ formatAMPM(startDate) + ' to ' + formatAMPM(endDate) }</span> </> :
-                                    <><span>{ dateFormatter(startDate) }</span>
-                                        <span>{ formatAMPM(startDate) + ' to ' + formatAMPM(endDate) }</span></>
+                                        <span>{ formatTime(startDate) } to { formatTime(endDate) }</span> </> :
+                                    <><span>{ dateFormatter(startDate, true) }</span>
+                                        <span>To + { dateFormatter(endDate, true) }</span></>
                             }
 
                         </time>
                     </div>
                     {
-                        !isSelected ? <button onClick={ () => { selectEventHandler(eventValue) } } disabled={ selectionEnabled }>Select</button> : <button onClick={ () => {
-                            deSelectHandler(eventValue);
+                        !isSelected ? <button onClick={ () => { selectEventHandler(event) } } disabled={ selectionEnabled }>Select</button> : <button onClick={ () => {
+                            deSelectHandler(event);
                         } }>DeSelect</button>
                     }
 
@@ -114,4 +100,4 @@ const EventCards: React.FC<IProps> = (prop: IProps) => {
     )
 }
 
-export default EventCards; 
+export default EventCard; 

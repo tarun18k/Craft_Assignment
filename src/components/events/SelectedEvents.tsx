@@ -1,19 +1,18 @@
 import React from 'react'
-import { getSelectedEvents, IEvent, selectEvents } from '../../services/slice/events.slice';
+import { getSelectedEvents, IEvent } from '../../services/slice/events.slice';
 import { useAppSelector } from '../../store/hooks';
-import EventCards from './common/EventCards'
-import styles from './Events.module.scss'
+import EventCard from './common/EventCard'
 
 export default function SelectedEvents() {
     const selectedEvents = useAppSelector(getSelectedEvents);
 
     return (
-        <div className={ styles.eventsBox }>
-            <h2 className={ styles.heading }>Selected Events</h2>
+        <div>
+            <h2>Selected Events</h2>
             <h2>{ selectedEvents.length }</h2>
-            <div className={ styles.eventList }>
+            <div>
                 { selectedEvents.length && selectedEvents.map((event: IEvent) => {
-                    return <EventCards event={ event } key={ event.id } selectedEvent={ true } />
+                    return <EventCard event={ event } key={ event.id } isSelected={ true } />
                 })
                 }
             </div>

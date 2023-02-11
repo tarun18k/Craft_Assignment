@@ -1,7 +1,7 @@
 import type { AnyAction, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
-// Define a type for the slice state
+
 export interface IEvent {
 	id: number;
 	event_name: string;
@@ -15,54 +15,76 @@ interface IEventState {
 	selectedEvents: IEvent[];
 	noDataFound: boolean;
 	isLoading: boolean;
+	showError: boolean;
 }
 
-// Define the initial state using that type
 const initialState: IEventState = {
 	allEvents: [],
 	selectedEvents: [],
 	noDataFound: false,
 	isLoading: false,
+	showError: false,
 };
 
 export const eventsSlice = createSlice({
 	name: "events",
-	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
 	reducers: {
 		eventsReceived: (state, action: PayloadAction<IEvent[]>) => {
 			state.allEvents = action.payload;
 			state.noDataFound = action.payload.length ? false : true;
 		},
+
 		selectEvents: (state, action: PayloadAction<IEvent>) => {
 			state.selectedEvents = [...state.selectedEvents, action.payload];
 			state.allEvents = state.allEvents.filter((event) => {
 				return event.id !== action.payload.id;
 			});
 		},
+
 		deSelectEvents: (state, action: PayloadAction<IEvent>) => {
 			state.selectedEvents = state.selectedEvents.filter((event) => {
 				return event.id !== action.payload.id;
 			});
 			state.allEvents = [...state.allEvents, action.payload];
 		},
+
+		setErrorState: (state, action: PayloadAction<boolean>) => {
+			state.showError = action.payload;
+		},
+
+		setIsLoading: (state, action: PayloadAction<boolean>) => {
+			state.isLoading = action.payload;
+		},
 	},
 });
 
-export const { eventsReceived, selectEvents, deSelectEvents } =
-	eventsSlice.actions;
+export const {
+	eventsReceived,
+	selectEvents,
+	deSelectEvents,
+	setErrorState,
+	setIsLoading,
+} = eventsSlice.actions;
 
 // Constants
 export const getEventsList = () => (dispatch: Dispatch<AnyAction>) => {
+	dispatch(setIsLoading(true));
+
 	const url = "https://run.mocky.io/v3/2744c231-8991-4ae8-bc45-1f645437585a";
+
 	fetch(url, { method: "GET" })
 		.then((res) => res.json())
 		.then((res: IEvent[]) => {
+			dispatch(setIsLoading(false));
 			dispatch(eventsReceived(res));
+		})
+		.catch(() => {
+			dispatch(setIsLoading(false));
+			dispatch(setErrorState(true));
 		});
 };
 
-// Other code such as selectors can use the imported `RootState` type
 export const getEvents = (state: RootState) => state.events.allEvents;
 
 export const getSelectedEvents = (state: RootState) =>
