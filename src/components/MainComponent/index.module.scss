@@ -1,7 +1,14 @@
 .mainGrid {
+	padding: 2rem;
 	display: grid;
 	grid-template-columns: 2fr 1fr;
-	grid-gap: 10px;
+	grid-gap: 1.5rem;
 	overflow: auto;
-	height: 95vh;
+	height: 92vh;
+}
+
+@media only screen and (max-width: 900px) {
+	.mainGrid {
+		grid-template-columns: 1fr;
+	}
 }

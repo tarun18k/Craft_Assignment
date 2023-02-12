@@ -1,12 +1,15 @@
+@import "../../styles/variables.scss";
+
 .navbar {
-	height: 5vh;
-	background-color: #fec500;
-	display: Flex;
+	height: 8vh;
+	background-color: $primary-color;
+	display: flex;
 	align-items: center;
+
 	h1 {
 		text-transform: uppercase;
-
-		border-left: 10px solid white;
+		color: $primary-font-color;
+		border-left: 10px solid $secondary-color;
 		padding-left: 10px;
 		margin-left: 10px;
 	}

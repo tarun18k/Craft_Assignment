@@ -1,0 +1,86 @@
+@import "./variables.scss";
+
+/* Buttons */
+button {
+	padding: 0.5rem 0.75rem;
+	font-size: 1.375rem;
+	border-radius: 4px;
+	cursor: pointer;
+	opacity: 0.9;
+	font-weight: 500;
+	min-width: 7rem;
+
+	&:hover {
+		opacity: 1;
+		font-weight: 600;
+	}
+}
+
+.primary-btn {
+	background-color: $primary-button-color;
+	color: $btn-text-color;
+}
+
+.secondary-btn {
+	background-color: $secondary-button-color;
+	color: $btn-text-color;
+}
+
+/* Search Wrapper */
+.search-wrapper {
+	position: relative;
+	width: 20rem;
+	display: flex;
+	align-items: center;
+	height: 1.5rem;
+	background-color: #ffffff;
+
+	.search-box {
+		font-weight: 400;
+		font-size: 1rem;
+		color: #152238;
+		background: #ffffff;
+		border: 1px solid #ced4da;
+		border-radius: 4px;
+		height: 2.5rem;
+		width: 100%;
+		max-width: 20rem;
+		padding: 0.275rem 0.5rem;
+		padding-left: 2rem;
+		&::placeholder {
+			font-family: "Gotham Medium";
+			font-weight: 400;
+			font-size: 1rem;
+			color: #152238;
+		}
+		&:focus-visible {
+			outline: none;
+		}
+	}
+	span {
+		position: absolute;
+		left: 0.5rem;
+		top: 0.175rem;
+		pointer-events: none;
+	}
+}
+
+/* Scroll Bar */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	box-shadow: none;
+	border: none;
+	margin: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: $scrollbar-bg-color;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: $scrollbar-bg-color;
+}

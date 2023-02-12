@@ -1,3 +1,4 @@
+import { toggleAlert } from "../services/slice/alert.slice";
 import {
 	deSelectEvents,
 	getSelectedEvents,
@@ -12,9 +13,19 @@ const useValidateSelection = () => {
 
 	function selectEvent(selectedEvent: IEvent) {
 		if (selectedEventsList.length === 3) {
-			console.log("Cannot Select More than 3 events.");
+			dispatch(
+				toggleAlert({
+					show: true,
+					message: "You cannot select more than 3 events. Please remove an event to add some other.",
+				})
+			);
 		} else if (isOverlappingEvent(selectedEventsList, selectedEvent)) {
-			console.log("Overlapping Events");
+			dispatch(
+				toggleAlert({
+					show: true,
+					message: "You have overlapping events with the selected event time. Please remove overlapping events from the selected events list.",
+				})
+			);
 		} else {
 			dispatch(selectEvents(selectedEvent));
 		}

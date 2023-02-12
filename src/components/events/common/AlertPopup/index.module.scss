@@ -1,0 +1,35 @@
+@import "../../../../styles/variables.scss";
+
+.modalContainer {
+	display: flex;
+	position: absolute;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 2;
+	top: 0;
+
+	.modalBody {
+		padding: 1.5rem;
+		width: 35rem;
+		min-height: 14rem;
+		margin: auto;
+		background-color: $secondary-color;
+		border-radius: 4px;
+		box-shadow: 14px 2px 74px -6px rgba(0, 0, 0, 0.6);
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.modalContent {
+			font-size: 1.5rem;
+			font-weight: 600;
+			line-height: 2rem;
+			color: $primary-font-color;
+		}
+
+		.modalFooter {
+			text-align: end;
+		}
+	}
+}
