@@ -1,43 +1,53 @@
-import React, { ChangeEvent, InputHTMLAttributes, KeyboardEvent, useEffect, useRef } from 'react'
+import React, { ChangeEvent, InputHTMLAttributes, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { clearTimeout } from 'timers';
 import useValidateSelection from '../../hooks/useSelectionValidation';
 import { getEvents, getEventsList, IEvent } from '../../services/slice/events.slice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import EventCards from './common/EventCard'
+import debounce from '../../utils/debounce';
+import EventCards from './common/EventCard';
+import styles from './index.module.scss';
+
+
 
 export default function Events() {
-
-    //const timeRef = useRef(-1);
 
     const dispatch = useAppDispatch();
 
     const events = useAppSelector(getEvents);
 
+    const [displayedEvents, setDisplayedEvents] = useState<IEvent[]>([]);
+
     const { selectEvent } = useValidateSelection();
+
+    const debouncedFilter = useCallback(debounce((val: string) => {
+        filterEvents(val);
+    }, 500), [])
 
     useEffect(() => {
         dispatch(getEventsList());
     }, [dispatch]);
 
-    const filterHandler = () => {
-        return function (event: ChangeEvent<HTMLInputElement>) {
-
-            setTimeout(() => {
-                filterEvents(event);
-            }, 300)
-        }
+    useEffect(() => {
+        setDisplayedEvents(events);
+    }, [events])
+    const filterHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        debouncedFilter(event.target.value);
     }
-    const filterEvents = (event: ChangeEvent<HTMLInputElement>): void => {
-        console.log(event.target.value);
+    const filterEvents = (searchValue: string): void => {
+        setDisplayedEvents((events: IEvent[]) => {
+            return displayedEvents.filter((event) => {
+                return event.event_name.toLowerCase().includes(searchValue.toLowerCase());
+            })
+        })
     }
 
     return (
         <div>
             <div className="sub-header"><h2>All Events</h2>
-                <input onChange={ filterHandler() } placeholder='Search...' />
+                <input onChange={ filterHandler } placeholder='Search...' />
             </div>
-            <div>
-                { events.length && events.map((event: IEvent) => {
+            <div className={ styles.allEventsWrapper }>
+                { displayedEvents.length && displayedEvents.map((event: IEvent) => {
                     return <EventCards event={ event } selectHandler={ selectEvent } key={ event.id } />
                 })
                 }
