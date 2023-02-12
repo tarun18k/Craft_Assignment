@@ -1,18 +1,13 @@
 import React from 'react'
-import { deSelectEvents, getSelectedEvents, IEvent, selectEvents } from '../../../../services/slice/events.slice'
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { IEvent } from '../../../../services/slice/events.slice'
 
 interface IProps {
     event: IEvent,
-    isSelected?: boolean,
-    selectionEnabled?: boolean,
+    selectHandler?: (event: IEvent) => void,
+    deSelectHandler?: (event: IEvent) => void,
 }
 const EventCard: React.FC<IProps> = (props: IProps) => {
-    const { event, isSelected, selectionEnabled }: IProps = props;
-
-    const dispatch = useAppDispatch();
-
-    const selectedEventsList = useAppSelector(getSelectedEvents);
+    const { event, selectHandler, deSelectHandler }: IProps = props;
 
     const startDate = new Date(event?.start_time);
     const endDate = new Date(event?.end_time);
@@ -36,34 +31,6 @@ const EventCard: React.FC<IProps> = (props: IProps) => {
         let strTime = hours + ':' + minutes + ' ' + format;
         return strTime;
     }
-
-    const isOverlappingEvents = (eventList: IEvent[], selectedEvent: IEvent): boolean => {
-        let selectedStartDate = new Date(selectedEvent.start_time).toISOString();
-        return eventList.some((event: IEvent) => {
-            let currentDate = new Date(event.start_time).toISOString();
-            let prevDateEvent = currentDate > selectedStartDate ? selectedEvent : event;
-            let futureDateEvent = currentDate > selectedStartDate ? event : selectedEvent;
-            return prevDateEvent.end_time >= futureDateEvent.start_time;
-        })
-
-    }
-
-    const selectEventHandler = (event: IEvent): void => {
-        if (selectedEventsList.length === 3) {
-            console.log('Cannot Select More than 3 events.')
-        }
-        else if (isOverlappingEvents(selectedEventsList, event)) {
-            console.log('Overlapping Events');
-        }
-        else {
-            dispatch(selectEvents(event));
-        }
-    }
-
-    const deSelectHandler = (event: IEvent): void => {
-        dispatch(deSelectEvents(event));
-    }
-
     return (
         <div className="card">
             <article className="card fl-left">
@@ -89,10 +56,9 @@ const EventCard: React.FC<IProps> = (props: IProps) => {
                         </time>
                     </div>
                     {
-                        !isSelected ? <button onClick={ () => { selectEventHandler(event) } } disabled={ selectionEnabled }>Select</button> : <button onClick={ () => {
-                            deSelectHandler(event);
-                        } }>DeSelect</button>
-                    }
+                        selectHandler && <button onClick={ () => { selectHandler(event) } }>Select</button> }
+                    { deSelectHandler && <button onClick={ () => { deSelectHandler(event) } }>DeSelect</button> }
+
 
                 </section>
             </article>

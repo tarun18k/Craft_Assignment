@@ -1,0 +1,13 @@
+.navbar {
+	height: 5vh;
+	background-color: #fec500;
+	display: Flex;
+	align-items: center;
+	h1 {
+		text-transform: uppercase;
+
+		border-left: 10px solid white;
+		padding-left: 10px;
+		margin-left: 10px;
+	}
+}
