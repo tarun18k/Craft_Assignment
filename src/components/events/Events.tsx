@@ -52,7 +52,6 @@ export default function Events() {
             setDisplayedEvents(events);
             return;
         }
-        console.log(events, searchValue);
         setDisplayedEvents(() => {
             return events.filter((event) => {
                 return event.event_name.toLowerCase().includes(searchValue.toLowerCase());
