@@ -48,7 +48,7 @@ const useValidateSelection = () => {
 				currentDate > selectedStartDate ? selectedEvent : event;
 			let futureDateEvent =
 				currentDate > selectedStartDate ? event : selectedEvent;
-			return prevDateEvent.end_time >= futureDateEvent.start_time;
+			return prevDateEvent.end_time > futureDateEvent.start_time;
 		});
 	};
 
