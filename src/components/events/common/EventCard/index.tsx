@@ -5,12 +5,15 @@ import styles from "./index.module.scss";
 
 interface IProps {
     event: IEvent;
-    selectHandler?: (event: IEvent) => void;
-    deSelectHandler?: (event: IEvent) => void;
+    clickHandler: (event: IEvent) => void;
+    button: {
+        buttonLabel: string,
+        buttonType: string
+    }
 }
 
 const EventCard: React.FC<IProps> = (props: IProps) => {
-    const { event, selectHandler, deSelectHandler }: IProps = props;
+    const { event, clickHandler, button }: IProps = props;
     const startDate = new Date(event?.start_time);
     const endDate = new Date(event?.end_time);
 
@@ -85,12 +88,9 @@ const EventCard: React.FC<IProps> = (props: IProps) => {
                 </div>
 
                 <div className={ styles.buttonWrapper }>
-                    { selectHandler && (
-                        <button className="primary-btn" onClick={ () => { selectHandler(event) } }>Select</button>
-                    ) }
-                    { deSelectHandler && (
-                        <button className="secondary-btn" onClick={ () => { deSelectHandler(event) } }>Delete</button>
-                    ) }
+                    {
+                        <button className={ `${button.buttonType}-btn` } onClick={ () => { clickHandler(event) } }>{ button.buttonLabel }</button> }
+
                 </div>
             </section>
         </div>

@@ -1,8 +1,9 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import useValidateSelection from '../../hooks/useSelectionValidation';
-import { getDataState, getErrorState, getEvents, IEvent } from '../../services/slice/events.slice';
+import { getErrorState, getEvents, IEvent } from '../../services/slice/events.slice';
 import { useAppSelector } from '../../store/hooks';
-import EventCards from './common/EventCard';
+import EventsListView from './common/EventsListView';
+
 import SearchIcon from './common/Icons/SearchIcon';
 import styles from './index.module.scss';
 
@@ -67,12 +68,7 @@ export default function Events() {
                     <span><SearchIcon /></span>
                 </div>
             </div>
-            <div className={ styles.allEventsWrapper }>
-                { displayedEvents.length ? displayedEvents.map((event: IEvent) => {
-                    return <EventCards event={ event } selectHandler={ selectEvent } key={ event.id } />
-                }) : !errorState ? <div className={ styles.noDataFound }>Sorry no events found to display!</div> : <div className={ styles.noDataFound }>Oops,something went wrong.Please try again later.</div>
-                }
-            </div>
+            <EventsListView eventsList={ displayedEvents } clickHandler={ selectEvent } layoutStyle={ 'col-2' } button={ { buttonLabel: 'Select', buttonType: 'primary' } } />
         </div>
     )
 }

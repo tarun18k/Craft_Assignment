@@ -1,12 +1,12 @@
 @import "../../styles/variables.scss";
 
-.allEventsWrapper {
+.col2 {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(49%, 1fr));
 	gap: 1rem;
 }
 
-.selectedEventsWrapper {
+.col1 {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
@@ -20,7 +20,6 @@
 	flex-direction: column;
 
 	.eventsHeader {
-		height: 10%;
 		display: flex;
 		justify-content: space-between;
 	}
