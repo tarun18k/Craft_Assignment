@@ -94,4 +94,6 @@ export const getDataState = (state: RootState) => state.events.noDataFound;
 
 export const getLoadingState = (state: RootState) => state.events.isLoading;
 
+export const getErrorState = (state: RootState) => state.events.showError;
+
 export const eventsReducer = eventsSlice.reducer;

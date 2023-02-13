@@ -6,7 +6,7 @@ const Loader = () => {
 
     useEffect(() => {
         const data: number[] = [];
-        for (let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 6; i++) {
             data.push(i);
         }
         setNumbers(data);
@@ -14,14 +14,11 @@ const Loader = () => {
 
     return (
         <div className={ styles.loaderContainer }>
+            <div className={ `${styles.loaderHeader} ${styles.loader}` }></div>
             <div className={ styles.loaderWrapper }>
                 { numbers.map((val: number) => {
                     return <div key={ val } className={ styles.loader }></div>
                 }) }
-            </div>
-            <div>
-                <div className={ styles.loader }></div>
-                <div className={ styles.loader }></div>
             </div>
         </div>
     )
