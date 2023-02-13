@@ -35,7 +35,7 @@ const Paginator: React.FC<IProps> = (props: IProps) => {
         <ul
             className={ `${styles.paginationContainer} ${styles.paginationBar}` }
         >
-            <li
+            <li key={ 0 }
                 className={ `${styles.paginationItem} ${currentPage === 1 ? styles.disabled : ''}` }
 
                 onClick={ onPrevious }
@@ -44,11 +44,11 @@ const Paginator: React.FC<IProps> = (props: IProps) => {
             </li>
             { paginationRange.map(pageNumber => {
                 if (pageNumber === DOTS) {
-                    return <li className={ `${styles.paginationItem} ${styles.dots}` }>&#8230;</li>;
+                    return <li key={ pageNumber } className={ `${styles.paginationItem} ${styles.dots}` }>&#8230;</li>;
                 }
 
                 return (
-                    <li
+                    <li key={ pageNumber }
                         className={ `${styles.paginationItem} ${pageNumber === currentPage ? styles.selected : ''}` }
                         onClick={ () => pageChangeHandler(Number(pageNumber)) }
                     >
@@ -56,7 +56,7 @@ const Paginator: React.FC<IProps> = (props: IProps) => {
                     </li>
                 );
             }) }
-            <li
+            <li key={ paginationRange.length + 1 }
                 className={ `${styles.paginationItem} ${currentPage === lastPage ? styles.disabled : ''}` }
                 onClick={ onNext }
             >
