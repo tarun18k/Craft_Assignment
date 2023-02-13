@@ -45,8 +45,13 @@
 	}
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 860px) {
 	.selectedEventsContainer {
 		border: none;
+	}
+	.eventsContainer {
+		.eventsHeader h2 {
+			display: none;
+		}
 	}
 }

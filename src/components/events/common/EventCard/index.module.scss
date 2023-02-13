@@ -65,3 +65,26 @@
 		}
 	}
 }
+@media screen and (max-width: 860px) {
+	.card {
+		display: block;
+		float: none;
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.card + .card {
+		margin-left: 0;
+	}
+	.cardDateWrapper {
+		display: none;
+	}
+	.cardContent .buttonWrapper {
+		text-align: start;
+		padding-left: 1rem;
+	}
+	.cardContent:before,
+	.cardContent:after {
+		display: none !important;
+	}
+}
