@@ -22,15 +22,12 @@ const EventsListView: React.FC<IProps> = (props: IProps) => {
     const noDataFoundMessage = props.noDataFoundMessage ? props.noDataFoundMessage : 'Sorry no events found to display!';
 
     const [activePage, setActivePage] = useState(1);
-    const [pageCount, setPageCount] = useState(0);
 
     const [paginatedEvents, setPaginatedEvents] = useState(events);
 
 
 
     useEffect(() => {
-        const rem = events.length % pageSize === 0 ? 0 : 1;
-        setPageCount(Math.floor(events.length / pageSize) + rem);
         changePageNumber(1);
     }, [events]);
 
